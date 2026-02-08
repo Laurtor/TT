@@ -8,7 +8,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout source
+      - name: Checkout
         uses: actions/checkout@v4
 
       - name: Set up JDK 11
@@ -17,15 +17,20 @@ jobs:
           distribution: temurin
           java-version: 11
 
-      - name: Grant execute permission
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Accept SDK licenses
+        run: yes | sdkmanager --licenses
+
+      - name: Grant gradlew permission
         run: chmod +x gradlew
 
-      - name: Build Debug APK (TV + Mobile)
-        run: |
-          ./gradlew assembleDebug
+      - name: Build Debug APK
+        run: ./gradlew assembleDebug
 
-      - name: Upload APK artifacts
+      - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
           name: apk-output
-          path: app/build/outputs/apk/debug/
+          path: app/build/outputs/apk/**/**/*.apk
