@@ -13,11 +13,11 @@ jobs:
         abi: [arm64_v8a, armeabi_v7a]
 
     steps:
-      # 1️⃣ Checkout repository
+      # 1️⃣ Checkout
       - name: Checkout
         uses: actions/checkout@v4
         with:
-          submodules: true  # 如果有 submodule，保留
+          submodules: true
 
       # 2️⃣ Set up JDK 17
       - name: Set up JDK 17
@@ -26,7 +26,7 @@ jobs:
           distribution: temurin
           java-version: 17
 
-          # 3️⃣ Setup Python 3.10 for Chaquopy
+      # 3️⃣ Setup Python 3.10 (Chaquopy)
       - name: Setup Python 3.10
         uses: actions/setup-python@v4
         with:
@@ -36,19 +36,18 @@ jobs:
       - name: Setup Android SDK
         uses: android-actions/setup-android@v3
         with:
-          api-level: 36
-          build-tools: 36.0.0
-          ndk: 25.2.9519653
+          cmdline-tools-version: "9.0.0"
+          packages: |
+            platforms;android-36
+            build-tools;36.0.0
+            ndk;25.2.9519653
+          accept-android-sdk-licenses: true
 
-      # 5️⃣ Accept SDK licenses
-      - name: Accept SDK licenses
-        run: yes | sdkmanager --licenses
-
-      # 6️⃣ Grant gradlew permission
+      # 5️⃣ Grant gradlew permission
       - name: Grant gradlew permission
         run: chmod +x gradlew
 
-      # 7️⃣ Build APK (Debug)
+      # 6️⃣ Build APK (Debug)
       - name: Build Debug APK
         run: |
           echo "Flavor: ${{ matrix.flavor }}, ABI: ${{ matrix.abi }}"
@@ -69,7 +68,7 @@ jobs:
           echo "Running Gradle task: $TASK"
           ./gradlew $TASK --stacktrace
 
-      # 8️⃣ Upload APK artifact
+      # 7️⃣ Upload APK artifact
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
