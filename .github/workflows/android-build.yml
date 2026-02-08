@@ -20,7 +20,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
         with:
-          submodules: true  # 如果你有 submodule，保留
+          submodules: true  # 如果有 submodule
 
       # 2️⃣ Setup Java 17
       - name: Setup Java 17
@@ -29,7 +29,7 @@ jobs:
           distribution: temurin
           java-version: 17
 
-      # 3️⃣ Setup Python 3.10 (for Chaquopy)
+      # 3️⃣ Setup Python 3.10 for Chaquopy
       - name: Setup Python 3.10
         uses: actions/setup-python@v4
         with:
@@ -58,6 +58,7 @@ jobs:
       - name: Build Debug APK
         run: |
           echo "Flavor: ${{ matrix.flavor }}, ABI: ${{ matrix.abi }}"
+
           if [ "${{ matrix.flavor }}" = "leanback" ] && [ "${{ matrix.abi }}" = "arm64_v8a" ]; then
             TASK=assembleLeanbackArm64v8aDebug
           elif [ "${{ matrix.flavor }}" = "leanback" ] && [ "${{ matrix.abi }}" = "armeabi_v7a" ]; then
@@ -70,6 +71,7 @@ jobs:
             echo "Unknown flavor/ABI combination"
             exit 1
           fi
+
           echo "Running Gradle task: $TASK"
           ./gradlew $TASK --stacktrace
 
