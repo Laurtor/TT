@@ -26,11 +26,11 @@ jobs:
           distribution: temurin
           java-version: 17
 
-      # 3️⃣ Set up Python 3.10 for Chaquopy
+          # 3️⃣ Setup Python 3.10 for Chaquopy
       - name: Setup Python 3.10
         uses: actions/setup-python@v4
         with:
-          python-version: 3.10
+          python-version: "3.10"
 
       # 4️⃣ Setup Android SDK / Build Tools / NDK
       - name: Setup Android SDK
